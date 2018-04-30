@@ -19,12 +19,14 @@ int16_t acorr(int8_t ai, int8_t bi)
     a[offset%RB_SIZE] = ai;
     b[offset%RB_SIZE] = bi;
 
-    for (int i = 0; i < CONV_SIZE; i++)
+    int i = offset - (RB_SIZE-CONV_SIZE/2);
+    for (int j = i - (CONV_SIZE/2); j < i + (CONV_SIZE/2); j++)
     {
-        
+        printf("%02X ", j);
     }
+        printf("\n");
 
-    offset = offset + 1;
+    offset = (offset + 1) % RB_SIZE;
     return 0;
 }
 
@@ -48,9 +50,9 @@ int main()
     while (bytes_read) {
         for (int i = 0; i < bytes_read / 2; i++) {
             acorr(buffer[i*2+0], buffer[i*2+1]);
-            printf("%02X ", buffer[i]);
+            //printf("%02X ", (uint8_t)buffer[i]);
         }
-        bytes_read = fread(buffer, 1, BUFF_SIZE0, f);
+        bytes_read = fread(buffer, 1, BUFF_SIZE, f);
     }
 
     fclose(f);
